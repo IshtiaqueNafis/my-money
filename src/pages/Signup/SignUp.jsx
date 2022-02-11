@@ -1,14 +1,16 @@
-import { useState } from 'react'
+import {useState} from 'react'
 import styles from './SIgnUp.module.css'
+import {useSignUp} from "../../hooks/useSignup";
 
 const SignUp = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [displayName, setDisplayName] = useState('')
+    const {signUp, pending, error} = useSignUp();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(email, password, displayName)
+        await signUp(email, password, displayName);
     }
 
     return (
@@ -38,7 +40,10 @@ const SignUp = () => {
                     value={displayName}
                 />
             </label>
+
             <button className="btn">Sign up</button>
+            {pending && <button className="btn" disabled>loading</button>}
+            {error && <p>{}</p>}
         </form>
     )
 };
